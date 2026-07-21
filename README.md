@@ -2,6 +2,12 @@
 
 SynergySplit is a game-theoretic coordination app for shared homes. It makes chores, bills, and cooperation visible without turning a household into a surveillance system. Members earn non-transferable Harmony Tokens for useful, timely contributions; a repeated-game reputation score smooths out one bad week; and a GPT-5.6 Sol mediator drafts private, face-saving reminders.
 
+## The winning demo: Household Council
+
+The Household Council turns a live, structured house imbalance into three materially different agreements with explicit trade-offs, a recommended path, assignments, a reversible check-in, and safety boundaries. GPT-5.6 handles bounded deliberation; deterministic code owns the ledger, fairness calculation, deadlines, permissions, and all mutations. The council can never silently change household data or send a message.
+
+For a sub-three-minute judge walkthrough: open the public demo, enter the dashboard, choose **Household council**, click **Convene household council**, compare the three plans, then open **House rules** to verify the system boundaries and provenance.
+
 ## What is implemented
 
 - Cinematic 3D product landing page with an interactive Harmony Core and live fairness simulator
@@ -14,6 +20,8 @@ SynergySplit is a game-theoretic coordination app for shared homes. It makes cho
 - Add-chore, add-bill, member-switching, filtering, activity-feed, and demo-reset flows
 - Inspectable Fairness Lab explaining the payoff rules and safety constraints
 - GPT-5.6 Sol mediator through the OpenAI Responses API
+- GPT-5.6 Household Council with multi-option, trade-off-aware structured deliberation
+- Automatic model cascade: GPT-5.6 Sol → GPT-5.6 Luna → labelled deterministic safety fallback
 - Deterministic safety fallback when `OPENAI_API_KEY` is not configured
 - Responsive desktop/mobile UI, pointer-reactive depth, and reduced-motion support
 
@@ -68,6 +76,8 @@ maximum output: 160 tokens
 The mediator receives only the recipient's display name, the requested tone, one task, its deadline, a coarse balance label, and the house harmony score. Its instruction explicitly forbids shaming, threats, diagnoses, public rankings, private-score disclosure, and financial advice. User-supplied names and task text are treated as inert data to reduce prompt-injection risk.
 
 If `OPENAI_API_KEY` is absent or the model call fails, the route returns a labelled deterministic fallback so every non-AI product flow remains demoable. It never pretends the fallback came from GPT-5.6.
+
+Limited-access API accounts first try `gpt-5.6-sol`, then the cost-sensitive `gpt-5.6-luna`. You can override the secondary model with `OPENAI_FALLBACK_MODEL`. An API account with no remaining credits cannot call any hosted model; in that case the honest deterministic fallback remains active.
 
 ## Architecture
 
